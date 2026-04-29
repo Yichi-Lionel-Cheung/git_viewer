@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Git History Viewer</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <h1 class="brand">Git History Viewer</h1>
+    <form class="repo-form" id="repoForm">
+      <label>Repository path or GitHub URL
+        <input id="repoInput" type="text" autocomplete="off" spellcheck="false">
+      </label>
+      <label>Ref
+        <input id="refInput" type="text" autocomplete="off" spellcheck="false">
+      </label>
+      <button id="loadButton" type="submit">Load</button>
+    </form>
+    <div class="load-progress" id="loadProgress" hidden>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-meta">
+        <span id="progressLabel">Starting</span>
+        <span id="progressPct">0%</span>
+      </div>
+    </div>
+    <section class="stats">
+      <div class="stat"><span>Commits</span><strong id="statCommits">0</strong></div>
+      <div class="stat"><span>Files</span><strong id="statFiles">0</strong></div>
+      <div class="stat"><span>Lines</span><strong id="statLines">0</strong></div>
+      <div class="stat"><span>Delta</span><strong id="statDelta">+0 -0</strong></div>
+    </section>
+    <div class="legend">
+      <span class="legend-item"><span class="chip base"></span> Lines</span>
+      <span class="legend-item"><span class="chip add"></span> Added</span>
+      <span class="legend-item"><span class="chip del"></span> Deleted</span>
+    </div>
+    <div class="status" id="status">Idle</div>
+  </aside>
+  <main class="main">
+    <header class="commit">
+      <h2 id="commitTitle">No repository loaded</h2>
+      <div class="commit-meta">
+        <span id="commitIndex">0/0</span>
+        <span id="commitHash"></span>
+        <span id="commitDate"></span>
+        <span id="commitAuthor"></span>
+      </div>
+    </header>
+    <section class="stage">
+      <canvas id="visual"></canvas>
+    </section>
+    <footer class="controls">
+      <button class="secondary" id="prevButton" type="button">Prev</button>
+      <button id="playButton" type="button">Play</button>
+      <button class="secondary" id="nextButton" type="button">Next</button>
+      <input id="timeline" type="range" min="0" max="0" step="1" value="0">
+      <span class="speed-label">Speed</span>
+      <input id="speed" type="range" min="0.25" max="4" step="0.25" value="1">
+    </footer>
+  </main>
+</div>
+<script id="app-config" type="application/json">__APP_CONFIG__</script>
+<script src="/static/app.js"></script>
+</body>
+</html>
