@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "git-history-viewer"
+version = "0.1.0"
+description = "A local browser UI for visualizing how code files change through a git repository's commit history."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+keywords = ["git", "history", "visualization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Homepage = "https://github.com/Yichi-Lionel-Cheung/git_viewer"
+Issues = "https://github.com/Yichi-Lionel-Cheung/git_viewer/issues"
+
+[project.scripts]
+git-history-viewer = "git_history_viewer.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["git_history_viewer*"]
+
+[tool.setuptools.package-data]
+git_history_viewer = [
+    "templates/*.html",
+    "static/*",
+]
