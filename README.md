@@ -47,6 +47,19 @@ The package entrypoint is equivalent:
 python3 -m git_history_viewer /path/to/repo
 ```
 
+For an installed command-line entrypoint:
+
+```bash
+pip install .
+git-history-viewer /path/to/repo
+```
+
+You can also install directly from GitHub:
+
+```bash
+pip install git+https://github.com/Yichi-Lionel-Cheung/git_viewer.git
+```
+
 To avoid opening the browser automatically:
 
 ```bash
@@ -73,6 +86,7 @@ python3 git_history_viewer.py /path/to/repo --json-summary
 
 ```text
 git_history_viewer.py          compatibility CLI entrypoint
+pyproject.toml                 Python packaging metadata and CLI script
 git_history_viewer/
   cli.py                       argument parsing and mode selection
   server.py                    local HTTP API and static asset server
