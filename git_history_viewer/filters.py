@@ -99,8 +99,15 @@ SKIPPED_DIRS = {
 }
 
 
-def is_code_path(path_text: str) -> bool:
+def is_tests_path(path_text: str) -> bool:
     path = PurePosixPath(path_text)
+    return any(part == "tests" for part in path.parts)
+
+
+def is_code_path(path_text: str, ignore_tests: bool = False) -> bool:
+    path = PurePosixPath(path_text)
+    if ignore_tests and is_tests_path(path_text):
+        return False
     if any(part in SKIPPED_DIRS for part in path.parts):
         return False
 

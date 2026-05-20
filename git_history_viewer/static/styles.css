@@ -124,6 +124,20 @@ label {
   font-weight: 700;
 }
 
+.check-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--ink);
+}
+
+.check-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--focus);
+}
+
 input[type="text"] {
   width: 100%;
   min-width: 0;

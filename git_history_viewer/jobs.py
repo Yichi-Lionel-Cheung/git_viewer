@@ -13,6 +13,7 @@ class HistoryJob:
     job_id: str
     repo_text: str
     ref: str
+    ignore_tests: bool = False
     status: str = "queued"
     done: int = 0
     total: int = 0
@@ -26,9 +27,14 @@ class HistoryJobManager:
         self._jobs: dict[str, HistoryJob] = {}
         self._lock = threading.Lock()
 
-    def start(self, repo_text: str, ref: str) -> str:
+    def start(self, repo_text: str, ref: str, ignore_tests: bool = False) -> str:
         job_id = uuid.uuid4().hex
-        job = HistoryJob(job_id=job_id, repo_text=repo_text, ref=ref)
+        job = HistoryJob(
+            job_id=job_id,
+            repo_text=repo_text,
+            ref=ref,
+            ignore_tests=ignore_tests,
+        )
         with self._lock:
             self._jobs[job_id] = job
 
@@ -55,6 +61,7 @@ class HistoryJobManager:
                 return
             repo_text = job.repo_text
             ref = job.ref
+            ignore_tests = job.ignore_tests
             job.status = "running"
             job.message = "Resolving repository"
 
@@ -69,7 +76,7 @@ class HistoryJobManager:
                 current.message = message
 
         try:
-            builder = GitHistoryBuilder(repo_text, ref)
+            builder = GitHistoryBuilder(repo_text, ref, ignore_tests=ignore_tests)
             history = builder.build(progress=progress)
             payload = history_to_payload(history)
         except Exception as exc:  # noqa: BLE001
