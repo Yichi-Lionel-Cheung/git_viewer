@@ -23,7 +23,7 @@ def expand_git_rename(path_text: str) -> tuple[str | None, str]:
     return None, path_text
 
 
-def parse_numstat(output: str) -> tuple[FileChange, ...]:
+def parse_numstat(output: str, ignore_tests: bool = False) -> tuple[FileChange, ...]:
     changes: list[FileChange] = []
     for raw_line in output.splitlines():
         if not raw_line:
@@ -41,8 +41,8 @@ def parse_numstat(output: str) -> tuple[FileChange, ...]:
             continue
 
         old_path, new_path = expand_git_rename(raw_path)
-        old_is_code = old_path is not None and is_code_path(old_path)
-        new_is_code = is_code_path(new_path)
+        old_is_code = old_path is not None and is_code_path(old_path, ignore_tests)
+        new_is_code = is_code_path(new_path, ignore_tests)
         if not old_is_code and not new_is_code:
             continue
 

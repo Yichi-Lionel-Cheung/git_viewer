@@ -80,7 +80,7 @@ def make_handler(
             self.respond_json(404, {"error": "Not found"})
 
         def handle_history_request(self, query: str) -> None:
-            repo_text, ref = _history_params(query)
+            repo_text, ref, ignore_tests = _history_params(query)
             if not repo_text:
                 self.respond_json(
                     400, {"error": "Repository path or GitHub URL is required."}
@@ -88,21 +88,21 @@ def make_handler(
                 return
 
             try:
-                builder = GitHistoryBuilder(repo_text, ref)
+                builder = GitHistoryBuilder(repo_text, ref, ignore_tests=ignore_tests)
                 history = builder.build()
                 self.respond_json(200, history_to_payload(history))
             except Exception as exc:  # noqa: BLE001
                 self.respond_json(400, {"error": str(exc)})
 
         def handle_start_history_request(self, query: str) -> None:
-            repo_text, ref = _history_params(query)
+            repo_text, ref, ignore_tests = _history_params(query)
             if not repo_text:
                 self.respond_json(
                     400, {"error": "Repository path or GitHub URL is required."}
                 )
                 return
 
-            job_id = job_manager.start(repo_text, ref)
+            job_id = job_manager.start(repo_text, ref, ignore_tests=ignore_tests)
             self.respond_json(
                 202,
                 {
@@ -199,10 +199,16 @@ def serve_web_app(
     return 0
 
 
-def _history_params(query: str) -> tuple[str, str]:
+def _history_params(query: str) -> tuple[str, str, bool]:
     params = parse_qs(query)
     repo_values = params.get("repo", [])
     ref_values = params.get("ref", [])
+    ignore_tests_values = params.get("ignore_tests", [])
     repo_text = repo_values[0].strip() if repo_values else ""
     ref = ref_values[0].strip() if ref_values else "HEAD"
-    return repo_text, ref or "HEAD"
+    ignore_tests = _parse_bool(ignore_tests_values[0]) if ignore_tests_values else False
+    return repo_text, ref or "HEAD", ignore_tests
+
+
+def _parse_bool(value: str) -> bool:
+    return value.strip().lower() in {"1", "true", "yes", "on"}

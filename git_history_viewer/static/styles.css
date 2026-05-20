@@ -11,6 +11,7 @@
   --del: #c23b36;
   --del-soft: #f1d6d2;
   --focus: #2b2924;
+  --font-ui: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 * {
@@ -22,7 +23,7 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background: var(--paper);
-  font-family: "Avenir Next", Candara, "Segoe UI", sans-serif;
+  font-family: var(--font-ui);
 }
 
 button,
@@ -91,7 +92,7 @@ input {
   justify-content: space-between;
   gap: 12px;
   color: var(--muted);
-  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--font-ui);
   font-size: 11px;
   line-height: 1.35;
 }
@@ -121,6 +122,20 @@ label {
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
+}
+
+.check-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--ink);
+}
+
+.check-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--focus);
 }
 
 input[type="text"] {
@@ -183,7 +198,7 @@ button:disabled {
   display: block;
   margin-top: 5px;
   overflow: hidden;
-  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--font-ui);
   font-size: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -225,7 +240,7 @@ button:disabled {
 .status {
   margin-top: auto;
   color: var(--muted);
-  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--font-ui);
   font-size: 12px;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -260,7 +275,7 @@ button:disabled {
   gap: 10px 18px;
   margin-top: 8px;
   color: var(--muted);
-  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--font-ui);
   font-size: 12px;
 }
 

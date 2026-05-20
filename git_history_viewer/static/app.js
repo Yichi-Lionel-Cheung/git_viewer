@@ -6,6 +6,7 @@ const els = {
   form: document.getElementById("repoForm"),
   repo: document.getElementById("repoInput"),
   ref: document.getElementById("refInput"),
+  ignoreTests: document.getElementById("ignoreTestsInput"),
   load: document.getElementById("loadButton"),
   status: document.getElementById("status"),
   commits: document.getElementById("statCommits"),
@@ -121,6 +122,7 @@ window.addEventListener("keydown", (event) => {
 async function loadHistory() {
   const repo = els.repo.value.trim();
   const ref = els.ref.value.trim() || "HEAD";
+  const ignoreTests = els.ignoreTests.checked;
   if (!repo) {
     setStatus("Enter a repository path or GitHub URL.");
     return;
@@ -143,7 +145,12 @@ async function loadHistory() {
   updateFrame(false);
 
   try {
-    const url = `/api/start-history?repo=${encodeURIComponent(repo)}&ref=${encodeURIComponent(ref)}`;
+    const params = new URLSearchParams({
+      repo,
+      ref,
+      ignore_tests: ignoreTests ? "1" : "0",
+    });
+    const url = `/api/start-history?${params.toString()}`;
     const response = await fetch(url);
     const payload = await response.json();
     if (!response.ok) {

@@ -9,9 +9,15 @@ from .numstat import parse_numstat
 
 
 class GitHistoryBuilder:
-    def __init__(self, repo_path: str | Path, ref: str = "HEAD") -> None:
+    def __init__(
+        self,
+        repo_path: str | Path,
+        ref: str = "HEAD",
+        ignore_tests: bool = False,
+    ) -> None:
         self.repo_path = repo_path
         self.ref = ref
+        self.ignore_tests = ignore_tests
 
     def build(self, progress: ProgressCallback | None = None) -> GitHistory:
         repo = resolve_repo_input(self.repo_path)
@@ -34,7 +40,7 @@ class GitHistoryBuilder:
                 )
 
             diff_output = self._read_diff(repo, previous_commit, commit_hash)
-            changes = parse_numstat(diff_output)
+            changes = parse_numstat(diff_output, ignore_tests=self.ignore_tests)
             self._apply_changes(line_counts, changes)
             meta = metadata.get(commit_hash)
             if meta is None:
@@ -129,7 +135,7 @@ class GitHistoryBuilder:
                 old_lines = line_counts.get(change.path, 0)
 
             new_lines = max(0, old_lines + change.additions - change.deletions)
-            if is_code_path(change.path) and new_lines > 0:
+            if is_code_path(change.path, self.ignore_tests) and new_lines > 0:
                 line_counts[change.path] = new_lines
             else:
                 line_counts.pop(change.path, None)

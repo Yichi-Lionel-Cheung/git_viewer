@@ -104,6 +104,7 @@ git_history_viewer/
 ## Notes
 
 - Binary files are skipped.
+- The UI can optionally ignore files under any `tests/` directory.
 - Common lock files, build outputs, dependency directories, and minified bundles
   are skipped so they do not dominate the picture.
 - File renames are tracked when git reports them through rename detection.
